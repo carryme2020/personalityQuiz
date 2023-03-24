@@ -293,8 +293,6 @@
                         <outletCollection property="rangedLabels" destination="PBc-Qo-V8H" collectionClass="NSMutableArray" id="hgd-U0-RwR"/>
                         <outletCollection property="multiSwitches" destination="nlR-ZO-hU9" collectionClass="NSMutableArray" id="Hgt-9a-Kpd"/>
                         <outletCollection property="multiSwitches" destination="Bh5-pH-O2Q" collectionClass="NSMutableArray" id="40X-bY-hZl"/>
-                        <outletCollection property="multiSwitches" destination="nlR-ZO-hU9" collectionClass="NSMutableArray" id="U5I-WN-gKf"/>
-                        <outletCollection property="multiSwitches" destination="Bh5-pH-O2Q" collectionClass="NSMutableArray" id="lU2-hK-TWe"/>
                         <outletCollection property="multiSwitches" destination="uKX-I2-Ekk" collectionClass="NSMutableArray" id="w7Q-rQ-v1A"/>
                         <outletCollection property="multiSwitches" destination="OKF-nk-Wp8" collectionClass="NSMutableArray" id="JT3-01-fSK"/>
                         <segue destination="53j-CX-mFc" kind="show" identifier="ResultSegue" id="RKE-vC-8lf"/>
