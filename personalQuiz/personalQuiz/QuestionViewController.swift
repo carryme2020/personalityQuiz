@@ -36,7 +36,7 @@ class QuestionViewController: UIViewController {
     
     var questionIndex = 0
     
-    var answerChosen: [Answer] = []
+    var answersChosen: [Answer] = []
     
     
     
@@ -58,6 +58,8 @@ class QuestionViewController: UIViewController {
     @IBOutlet weak var rangeStackView: UIStackView!
     
     @IBOutlet var rangedLabels: [UILabel]!
+    
+    @IBOutlet weak var rangedSlider: UISlider!
     
     
     @IBOutlet weak var questionProgressView: UIProgressView!
@@ -107,45 +109,38 @@ class QuestionViewController: UIViewController {
         for i in 0...3 {
             singleButtons[i].setTitle(answers[i].text, for: .normal)
         }
-        func updateMultipleStack(using answers:[Answer]) {
-            multipleStackView.isHidden = false
-            for i in 0...3{
-                multiLabels[i].text = answers[i].text
-            }
-        }
-        func updateRangeStack(using answers: [Answer]) {
-            rangeStackView.isHidden = false
-            rangedLabels[0].text = answers.first?.text
-            rangedLabels[1].text = answers.last?.text
-        }
-        
-        
-        
-        
-        /*
-         // MARK: - Navigation
-         
-         // In a storyboard-based application, you will often want to do a little preparation before navigation
-         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         // Get the new view controller using segue.destination.
-         // Pass the selected object to the new view controller.
-         }
-         */
-        
     }
+    func updateMultipleStack(using answers:[Answer]) {
+        multipleStackView.isHidden = false
+        for i in 0...3{
+            multiSwitches[i].isOn = false
+            multiLabels[i].text = answers[i].text
+        }
+    }
+    func updateRangeStack(using answers: [Answer]) {
+        rangeStackView.isHidden = false
+        rangedSlider.setValue(0.5, animated: false)
+        rangedLabels[0].text = answers.first?.text
+        rangedLabels[1].text = answers.last?.text
+    }
+    
+    
+
+     
     
     @IBAction func singleAnswerButtonPressed(_ sender: UIButton) {
         
-        let currentAnswer = question[questionIndex].answers
+        let currentAnswer = questions[questionIndex].answers
+        
         switch sender {
         case singleButtons[0] :
             answersChosen.append(currentAnswer[0])
         case singleButtons[1] :
             answersChosen.append(currentAnswer[1])
         case singleButtons[2] :
-            answerChosen.append(currentAnswer[2])
+            answersChosen.append(currentAnswer[2])
         case singleButtons[3] :
-            answerChosen.append(currentAnswer[3])
+            answersChosen.append(currentAnswer[3])
         default:
             break
         }
@@ -155,4 +150,52 @@ class QuestionViewController: UIViewController {
     
     
     
+    @IBAction func multipleAnswerButtonPressed(_ sender: Any) {
+        let currentAnswers = questions[questionIndex].answers
+        if multiSwitches[0].isOn {
+            answersChosen.append(currentAnswers[0])
+        }
+        if multiSwitches[1].isOn {
+            answersChosen.append(currentAnswers[1])
+        }
+        if multiSwitches[2].isOn {
+            answersChosen.append(currentAnswers[2])
+        }
+        if multiSwitches[3].isOn {
+            answersChosen.append(currentAnswers[3])
+        }
+    nextQuestion()
+    }
+    
+    
+    @IBAction func rangedAnswerButtonPressed(_ sender: Any) {
+        let currentAnswers = questions[questionIndex].answers
+        let index = Int(round(rangedSlider.value * Float(currentAnswers.count-1)))
+        answersChosen.append(currentAnswers[index])
+        
+        nextQuestion()
+    }
+    
+    func nextQuestion() {
+        questionIndex += 1
+        
+        if questionIndex < questions.count {
+            updateUI()
+        } else {
+            performSegue(withIdentifier: "ResultSegue", sender:nil)
+        }
+        
+    }
+    
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    // Get the new view controller using segue.destination.
+    // Pass the selected object to the new view controller.
+        if segue.identifier == "ResultSegue" {
+            let resultViewController = segue.destination as! ResultViewController
+            resultViewController.responses = answersChosen
+        }
+    }
 }
